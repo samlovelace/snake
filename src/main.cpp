@@ -2,7 +2,6 @@
 #include "constants.h"
 #include "Snake.h" 
 #include "Apple.h"
-#include "glyphs.h"
 
 int main()
 {
@@ -104,8 +103,6 @@ int main()
         // draw the apple 
         window.draw(Apple::get()->getDrawable()); 
 
-        renderGlyph(window, ONE, gridWithPixels + gridWithPixels/4, 10, 5); 
-        
         // actually display what was drawn
         window.display(); 
 

@@ -1,10 +1,9 @@
 #ifndef SEGMENT_H
 #define SEGMENT_H
 
-#include "SFML/Graphics.hpp"
+#include "Entity.h"
 
-
-class Segment
+class Segment : public Entity
 {
 public:
     Segment(int width, int height);
@@ -18,21 +17,12 @@ public:
         RIGHT
     };
 
-    // ******* Trivial Getters/Setters ********** // 
-    void setPosition(int x, int y) {mSegment.setPosition(x,y); }
-    void setColor(sf::Color aColor) {mSegment.setFillColor(aColor); }
-    int height() {return mHeight; }
-    int width() {return mWidth; }
-    float x() {return mSegment.getPosition().x; }
-    float y() {return mSegment.getPosition().y; }
+    // ******* Getters/Setters ********** // 
     DIRECTION direction() {return mDirection; }
     void setDirection(Segment::DIRECTION aDirection){mDirection = aDirection;}
 
-    sf::RectangleShape getDrawable() {return mSegment;}
 
-private:
-    sf::RectangleShape mSegment;
-    int mHeight, mWidth; 
+private: 
     DIRECTION mDirection; 
 };
 #endif // SEGMENT_H

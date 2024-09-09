@@ -1,9 +1,9 @@
 #ifndef APPLE_H
 #define APPLE_H
 
-#include "Segment.h"
+#include "Entity.h"
 
-class Apple : public Segment
+class Apple : public Entity
 {
 public:
     

@@ -3,7 +3,7 @@
 #include "constants.h"
 #include <random>
 
-Apple::Apple(/* args */) : Segment(CELL_SIZE-1, CELL_SIZE-1)
+Apple::Apple(/* args */) : Entity(CELL_SIZE-1, CELL_SIZE-1)
 {
 }
 
@@ -25,8 +25,8 @@ void Apple::init()
     float head_x = MIN_X + disX(gen)*CELL_SIZE;
     float head_y = MIN_Y + disY(gen)*CELL_SIZE;
 
-    setPosition(head_x, head_y);
-    setColor(sf::Color::Red); 
+    Entity::setPosition(head_x, head_y);
+    Entity::setColor(sf::Color::Red); 
 
 }
 
