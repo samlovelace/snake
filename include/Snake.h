@@ -8,8 +8,12 @@ class Snake
 {
 
 public:
-    Snake();
-    ~Snake();
+
+    static Snake* get()
+    {
+        static Snake* snake = new Snake();
+        return snake; 
+    }
 
     void init(); 
     void update(); 
@@ -23,6 +27,9 @@ public:
     void setDirection(Segment::DIRECTION aDir) {mSegments[0]->setDirection(aDir);}
 
 private: 
+    Snake();
+    ~Snake();
+
     std::vector<Segment*> mSegments; 
     int mNumSegments;
     sf::Color mColor;

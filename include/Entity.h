@@ -19,6 +19,7 @@ public:
     float x() {return mDrawable.getPosition().x; }
     float y() {return mDrawable.getPosition().y; }
     sf::RectangleShape getDrawable() {return mDrawable;}
+    Entity entity() {return static_cast<Entity>(*this);}
 
 private:
     sf::RectangleShape mDrawable; 

@@ -1,8 +1,6 @@
 #include "Snake.h"
-#include <random>
-#include <time.h>
-#include "constants.h"
 #include "Apple.h"
+#include "utilities.h"
 
 Snake::Snake() : mNumSegments(3), mColor(sf::Color::Green)
 {
@@ -22,17 +20,7 @@ void Snake::init()
         mSegments.push_back(seg);   
     }
 
-    // Create random number generators
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    // Define the range for the x and y positions (0 to GRID_WIDTH-1, and 0 to GRID_HEIGHT-1)
-    std::uniform_int_distribution<> disX(0, GRID_WIDTH - 1);
-    std::uniform_int_distribution<> disY(0, GRID_HEIGHT - 1);
-
-    // Generate random x and y positions within the grid
-    float head_x = MIN_X + disX(gen)*CELL_SIZE;
-    float head_y = MIN_Y + disY(gen)*CELL_SIZE;
+    std::pair<float,float> head = utils::generateRandomPair(); 
 
     // initialize the segments of the starting size of the snake 
     for(int i = 0; i < mSegments.size(); i++)
@@ -45,14 +33,14 @@ void Snake::init()
 
         if(i == 0)
         {
-            mSegments[i]->setPosition(head_x, head_y); 
+            mSegments[i]->setPosition(head.first, head.second); 
         }
         else
         {
             // set offset from head 
             // probably equal to the index of the segment times segment size 
-            int seg_x = head_x;
-            int seg_y = head_y + i* CELL_SIZE; 
+            int seg_x = head.first;
+            int seg_y = head.second + i* CELL_SIZE; 
         
             mSegments[i]->setPosition(seg_x, seg_y); 
             

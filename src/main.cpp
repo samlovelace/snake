@@ -8,13 +8,13 @@ int main()
     // the window where the game is played
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Snake"); 
 
-    // new snake object
-    Snake* snake = new Snake(); 
+    // get the snake singleton
+    Snake* snake = Snake::get(); 
 
     // initialize snake at random point on board
     snake->init(); 
 
-    // init the apple
+    // get the Apple singleton
     Apple::get()->init(); 
 
     // render the snake while the window is open
@@ -107,7 +107,7 @@ int main()
         window.display(); 
 
         // delay to make the game playable 
-        sf::sleep(sf::milliseconds(150)); 
+        sf::sleep(sf::milliseconds(125)); 
     }
 
 

@@ -2,6 +2,7 @@
 #define APPLE_H
 
 #include "Entity.h"
+#include "Snake.h"
 
 class Apple : public Entity
 {
@@ -15,7 +16,11 @@ public:
 
     void init();
     void reset(); 
+    bool generatedOnSnake(); 
+
+    // ************* Getters/Setters *********** // 
     int score() {return mScore; }
+
 
 private:
     
