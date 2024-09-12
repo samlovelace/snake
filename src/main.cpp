@@ -80,7 +80,7 @@ int main()
 
         // render the border grid
         utils::renderGrid(window); 
-        utils::renderScore(window, Apple::get()->score(), 500, 30, 8); 
+        utils::renderScore(window, Apple::get()->score(), 450, 30, 8); 
         utils::renderScore(window, Apple::get()->topScore(), 600, 30, 8); 
 
         // draw each segment of the snake  

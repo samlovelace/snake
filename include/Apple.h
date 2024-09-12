@@ -19,7 +19,6 @@ public:
     bool generatedOnSnake(); 
 
 
-
     // ************* Getters/Setters *********** // 
     int score() {return mScore; }
     int topScore() {return mTopScore; }
@@ -28,6 +27,7 @@ public:
 
 private:
     
+    // private constructor/destructor 
     Apple(/* args */);
     ~Apple(); 
 

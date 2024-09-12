@@ -4,6 +4,9 @@
 #include "SFML/Graphics.hpp"
 #include "constants.h"
 
+/** 
+ * @brief Entity - base class for all entities being rendered 
+ */
 class Entity
 {
 

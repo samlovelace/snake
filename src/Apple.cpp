@@ -44,6 +44,5 @@ void Apple::reset()
 {
     // called when snake eats an apple so increment the score and re-init the apple
     mScore++;
-    printf("mScore: %d\n", mScore);  
     init(); 
 }

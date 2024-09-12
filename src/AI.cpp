@@ -144,12 +144,14 @@ int AI::state(AI::TRY tryDir)
 
 void AI::move()
 {
+    // for current position of snake, try each possible direction to move
     int try_f = state(AI::TRY::FORWARD); 
     int try_l = state(AI::TRY::LEFT); 
     int try_r = state(AI::TRY::RIGHT); 
 
-    //printf("try_f: %d, try_l: %d, try_r: %d\n", try_f, try_l, try_r); 
 
+    // based on the scores from above, if try_f is the largest value, 
+    // no need to change the direction of the snake
     if(try_f >= try_l && try_f >= try_r)
     {
         // no change in direction

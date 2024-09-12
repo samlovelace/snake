@@ -170,6 +170,7 @@ void Snake::reset()
     {
         delete seg; 
     }
+    
     Apple* apple = Apple::get(); 
 
     if(apple->score() >= apple->topScore())
