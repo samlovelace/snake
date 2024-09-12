@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 
-const int GRID_SIZE = 30; 
+const int GRID_SIZE = 50; 
 const int GRID_DIM = 600; 
 
 const int WINDOW_WIDTH = 800;

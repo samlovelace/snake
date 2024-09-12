@@ -2,7 +2,7 @@
 #include "Apple.h"
 #include "utilities.h"
 
-Apple::Apple(/* args */) : Entity(CELL_SIZE-1, CELL_SIZE-1)
+Apple::Apple(/* args */) : Entity(CELL_SIZE-1, CELL_SIZE-1), mScore(0), mTopScore(0)
 {
 }
 
@@ -43,6 +43,7 @@ bool Apple::generatedOnSnake()
 void Apple::reset()
 {
     // called when snake eats an apple so increment the score and re-init the apple
-    mScore++; 
+    mScore++;
+    printf("mScore: %d\n", mScore);  
     init(); 
 }

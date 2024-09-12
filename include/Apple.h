@@ -18,9 +18,13 @@ public:
     void reset(); 
     bool generatedOnSnake(); 
 
+
+
     // ************* Getters/Setters *********** // 
     int score() {return mScore; }
-
+    int topScore() {return mTopScore; }
+    void setTopScore(int aTopScore) {mTopScore = aTopScore; }
+    void resetScore() {mScore = 0;}
 
 private:
     
@@ -28,6 +32,7 @@ private:
     ~Apple(); 
 
     int mScore;  
+    int mTopScore; 
     
 };
 

@@ -15,7 +15,8 @@ AI::~AI()
 int AI::state(AI::TRY tryDir)
 {
     int reward = 0; 
-    Segment* head = Snake::get()->getSegments()[0]; 
+    Snake* snake = Snake::get(); 
+    Segment* head = snake->getSegments()[0]; 
 
     int try_x = head->x(); 
     int try_y = head->y();  
@@ -91,13 +92,22 @@ int AI::state(AI::TRY tryDir)
     }
 
     
-    
-    // check conditions for reward 
-    // THERE IS A BUG HERE THAT CAUSES THE AI TO DIE WHEN GOING INTO THE LEFT WALL
+    // dont run into yourself dummy
+    for(auto seg : snake->getSegments())
+    {
+        if(try_x == seg->x() && try_y == seg->y())
+        {
+            reward += -100; 
+        }
+    }
+
+    // dont hit the border
     if(try_x < MIN_X || try_x >= MAX_X)
     {
         reward += -100; 
     }
+
+    // dont hit the other border dummy 
     if(try_y < MIN_Y || try_y >= MAX_Y)
     {
         reward += -100; 
@@ -106,11 +116,13 @@ int AI::state(AI::TRY tryDir)
     int apple_x = Apple::get()->x(); 
     int apple_y = Apple::get()->y(); 
 
+    // eat the apple..... or die!
     if(try_x == apple_x && try_y == apple_y)
     {
         reward += 100; 
     }
 
+    // get closer to the apple, so you can eat it
     int diff_x = abs(head->x() - apple_x); 
     int diff_y = abs(head->y() - apple_y); 
     int try_diff_x = abs(try_x - apple_x); 
@@ -124,7 +136,7 @@ int AI::state(AI::TRY tryDir)
     {
         reward += 5; 
     }
-    
+
     return reward; 
 }
 

@@ -170,6 +170,13 @@ void Snake::reset()
     {
         delete seg; 
     }
+    Apple* apple = Apple::get(); 
+
+    if(apple->score() >= apple->topScore())
+    {
+        apple->setTopScore(apple->score()); 
+        apple->resetScore(); 
+    }
 
     // re-init the starting size of the snake
     mNumSegments = 3;

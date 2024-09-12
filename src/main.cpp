@@ -3,6 +3,7 @@
 #include "Snake.h" 
 #include "Apple.h"
 #include "AI.h"
+#include "utilities.h"
 
 int main()
 {
@@ -71,35 +72,16 @@ int main()
         if(snake->ateAnApple())
         { 
             snake->grow(); 
-            Apple::get()->init(); 
+            Apple::get()->reset(); 
         }
-
 
         // clear the graphics buffer
         window.clear(); 
 
-        // optional to draw grid 
-        if(draw_grid)
-        {
-            std::vector<sf::RectangleShape> grid;
-            for (int i = 0; i < GRID_SIZE; i++) {
-                for (int j = 0; j < GRID_SIZE; j++) {
-                    
-                    sf::RectangleShape cell(sf::Vector2f(CELL_SIZE - 1, CELL_SIZE - 1)); // Slightly smaller for grid lines
-                    cell.setPosition(GRID_X+(i*CELL_SIZE), GRID_Y+(j*CELL_SIZE));   // Use offset for centering
-                    cell.setFillColor(sf::Color::Black);  // Cells are black
-                    cell.setOutlineThickness(1);          // Create a grid-like outline
-                    cell.setOutlineColor(sf::Color::White);
-                    grid.push_back(cell);
-                }
-            }        
-
-            for(auto& cell : grid)
-            {
-                window.draw(cell); 
-            }
-
-        }
+        // render the border grid
+        utils::renderGrid(window); 
+        utils::renderScore(window, Apple::get()->score(), 500, 30, 8); 
+        utils::renderScore(window, Apple::get()->topScore(), 600, 30, 8); 
 
         // draw each segment of the snake  
         for(auto seg : snake->getSegments())
@@ -114,7 +96,7 @@ int main()
         window.display(); 
 
         // delay to make the game playable 
-        sf::sleep(sf::milliseconds(125)); 
+        sf::sleep(sf::milliseconds(25)); 
     }
 
 
