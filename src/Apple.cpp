@@ -19,7 +19,7 @@ void Apple::init()
     do
     {
         std::pair<float, float> appleLoc = utils::generateRandomPair(); 
-        this->setPosition(appleLoc.first, appleLoc.second); 
+        this->setPosition(GRID_X + (CELL_SIZE*appleLoc.first), GRID_Y + (CELL_SIZE*appleLoc.second)); 
 
     } while (generatedOnSnake());
     

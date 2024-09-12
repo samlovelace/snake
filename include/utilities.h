@@ -15,12 +15,15 @@ namespace utils
         std::mt19937 gen(rd());
 
         // Define the range for the x and y positions (0 to GRID_WIDTH-1, and 0 to GRID_HEIGHT-1)
-        std::uniform_int_distribution<> disX(0, GRID_WIDTH - 1);
-        std::uniform_int_distribution<> disY(0, GRID_HEIGHT - 1);
+        std::uniform_int_distribution<> disX(0, GRID_SIZE/2 + GRID_SIZE/4);
+        std::uniform_int_distribution<> disY(0, GRID_SIZE/2 + GRID_SIZE/4);
 
         // Generate random x and y positions within the grid
-        float x = MIN_X + disX(gen)*CELL_SIZE;
-        float y = MIN_Y + disY(gen)*CELL_SIZE;
+        //float x = MIN_X + disX(gen)*CELL_SIZE;
+        //float y = MIN_Y + disY(gen)*CELL_SIZE;
+
+        int x = disX(gen); 
+        int y = disY(gen); 
 
         std::pair<float, float> coord = std::make_pair(x, y);  
 

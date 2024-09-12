@@ -15,7 +15,7 @@ public:
         return snake; 
     }
 
-    void init(); 
+    void init(int x, int y); 
     void update(); 
     bool detectCollisions(); 
     void reset();  

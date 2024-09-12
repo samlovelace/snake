@@ -12,11 +12,11 @@ Snake::~Snake()
     // do nothing 
 }
 
-void Snake::init()
+void Snake::init(const int x, const int y)
 { 
     for(int i = 0; i < mNumSegments; i++)
     {
-        Segment* seg = new Segment(CELL_SIZE-1, CELL_SIZE-1); 
+        Segment* seg = new Segment(CELL_SIZE, CELL_SIZE); 
         mSegments.push_back(seg);   
     }
 
@@ -33,14 +33,14 @@ void Snake::init()
 
         if(i == 0)
         {
-            mSegments[i]->setPosition(head.first, head.second); 
+            mSegments[i]->setPosition(GRID_X + (head.first*CELL_SIZE), GRID_Y + (head.second*CELL_SIZE)); 
         }
         else
         {
             // set offset from head 
             // probably equal to the index of the segment times segment size 
-            int seg_x = head.first;
-            int seg_y = head.second + i* CELL_SIZE; 
+            int seg_x = mSegments[0]->x(); 
+            int seg_y = mSegments[0]->y() + (i* CELL_SIZE); 
         
             mSegments[i]->setPosition(seg_x, seg_y); 
             
@@ -58,19 +58,21 @@ void Snake::update()
         // segment's position
         if(i == 0)
         {
-            switch (mSegments[i]->direction())
+            auto seg = mSegments[i]; 
+
+            switch (seg->direction())
             {
             case Segment::DIRECTION::UP:
-                mSegments[i]->setPosition(mSegments[i]->x(), mSegments[i]->y() - CELL_SIZE); 
+                seg->setPosition(seg->x(), seg->y() - CELL_SIZE); 
                 break;
             case Segment::DIRECTION::DOWN: 
-                mSegments[i]->setPosition(mSegments[i]->x(), mSegments[i]->y() +CELL_SIZE);
+                seg->setPosition(seg->x(), seg->y() + CELL_SIZE);
                 break; 
             case Segment::DIRECTION::LEFT: 
-                mSegments[i]->setPosition(mSegments[i]->x()- CELL_SIZE, mSegments[i]->y()); 
+                seg->setPosition(seg->x() - CELL_SIZE, seg->y()); 
                 break; 
             case Segment::DIRECTION::RIGHT: 
-                mSegments[i]->setPosition(mSegments[i]->x() +CELL_SIZE, mSegments[i]->y());
+                seg->setPosition(seg->x() + CELL_SIZE, seg->y());
                 break; 
             default:
                 break;
@@ -81,7 +83,6 @@ void Snake::update()
             mSegments[i]->setPosition(mSegments[i-1]->x(), mSegments[i-1]->y());
             mSegments[i]->setDirection(mSegments[i-1]->direction());  
         }
-
     }
     
     
@@ -91,6 +92,7 @@ bool Snake::detectCollisions()
 {
     // get the head of the snake
     auto head = mSegments[0]; 
+    //printf("#############head_x: %4.3f, head_y: %4.3f################\n", head->x(), head->y()); 
 
     // check if head is outside of the grid 
     if(head->x() < MIN_X || head->x() >= MAX_X || head->y() < MIN_Y || head->y() >= MAX_Y)
@@ -127,7 +129,7 @@ void Snake::grow()
 { 
     auto tail = mSegments[mSegments.size()-1];  
 
-    Segment* seg = new Segment(CELL_SIZE-1, CELL_SIZE-1); 
+    Segment* seg = new Segment(CELL_SIZE, CELL_SIZE); 
     
     int seg_x, seg_y; 
 
@@ -170,9 +172,9 @@ void Snake::reset()
     }
 
     // re-init the starting size of the snake
-    mNumSegments = 3; 
+    mNumSegments = 3;
     mSegments.clear(); 
     
     // re-init the snake 
-    init(); 
+    init(GRID_X, GRID_Y); 
 }

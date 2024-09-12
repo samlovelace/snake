@@ -11,13 +11,13 @@ public:
 
     enum class DIRECTION
     {
-        UP, 
-        DOWN, 
+        UP,
+        DOWN,
         LEFT, 
         RIGHT
     };
 
-    // ******* Getters/Setters ********** // 
+    //******* Getters/Setters **********// 
     DIRECTION direction() {return mDirection; }
     void setDirection(Segment::DIRECTION aDirection){mDirection = aDirection;}
 
