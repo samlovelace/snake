@@ -9,4 +9,4 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
 
 add_executable(${PROJECT_NAME} ${SNAKE_SOURCES})
 
-target_link_libraries(snake sfml-graphics sfml-window sfml-system)
+target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
