@@ -19,6 +19,7 @@ int main()
     // get the Apple singleton
     Apple::get()->init(); 
 
+    // init the AI ;-)
     AI* ai = new AI(); 
 
     // render the snake while the window is open
