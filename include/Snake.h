@@ -24,14 +24,26 @@ public:
 
     // *********** GETTERS/SETTERS **************** // 
     std::vector<Segment*> getSegments(){return mSegments;}
+    Segment* getSnakeHeadSegment() {return mSegments[0];}
     void setDirection(Segment::DIRECTION aDir) {mSegments[0]->setDirection(aDir);}
 
 private: 
     Snake();
     ~Snake();
 
+    void initializeSnakeSegments(); 
+
+    void setSegmentStartingPosition(int aSegmentIndex, Segment& aSegment); 
+
+    bool collidedWithBorder(); 
+
+    bool collidedWithSelf(); 
+
     std::vector<Segment*> mSegments; 
-    int mNumSegments;
+    int mInitialSnakeLength;
+    std::pair<float, float> mSnakeHeadStartingPosition; 
     sf::Color mColor;
+
+    Segment* mHead; 
 };
 #endif // SNAKE_H

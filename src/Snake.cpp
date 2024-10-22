@@ -2,7 +2,7 @@
 #include "Apple.h"
 #include "utilities.h"
 
-Snake::Snake() : mNumSegments(3), mColor(sf::Color::Green)
+Snake::Snake() : mInitialSnakeLength(3), mColor(sf::Color::Green)
 {
 
 }
@@ -14,40 +14,48 @@ Snake::~Snake()
 
 void Snake::init(const int x, const int y)
 { 
-    for(int i = 0; i < mNumSegments; i++)
+    // generate the random starting position (x,y) of the snake's head
+    mSnakeHeadStartingPosition = utils::generateRandomPair(); 
+
+    for(int segmentIndex = 0; segmentIndex < mInitialSnakeLength; segmentIndex++)
     {
+        // create new segment object 
         Segment* seg = new Segment(CELL_SIZE, CELL_SIZE); 
+
+        // set the color segment
+        seg->setColor(mColor); 
+
+        // starting direction is always up
+        seg->setDirection(Segment::DIRECTION::UP); 
+
+        // set the starting position of the initial snake segments
+        setSegmentStartingPosition(segmentIndex, *seg); 
+        
         mSegments.push_back(seg);   
     }
 
-    std::pair<float,float> head = utils::generateRandomPair(); 
+    // set the head segment 
+    mHead = mSegments[0]; 
 
-    // initialize the segments of the starting size of the snake 
-    for(int i = 0; i < mSegments.size(); i++)
+}
+
+void Snake::setSegmentStartingPosition(int aSegmentIndex, Segment& aSegmentOut)
+{
+    // zeroth index is the snake head
+    if(aSegmentIndex == 0)
     {
-        // set the color of the entire snake
-        mSegments[i]->setColor(mColor); 
-
-        // starting direction is always up
-        mSegments[i]->setDirection(Segment::DIRECTION::UP); 
-
-        if(i == 0)
-        {
-            mSegments[i]->setPosition(GRID_X + (head.first*CELL_SIZE), GRID_Y + (head.second*CELL_SIZE)); 
-        }
-        else
-        {
-            // set offset from head 
-            // probably equal to the index of the segment times segment size 
-            int seg_x = mSegments[0]->x(); 
-            int seg_y = mSegments[0]->y() + (i* CELL_SIZE); 
-        
-            mSegments[i]->setPosition(seg_x, seg_y); 
-            
-        }
+        aSegmentOut.setPosition(GRID_X + (mSnakeHeadStartingPosition.first*CELL_SIZE), GRID_Y + (mSnakeHeadStartingPosition.second*CELL_SIZE)); 
+    }
+    else
+    {
+        // set offset from head 
+        // equal to the index of the segment times segment size
+        int seg_x = getSnakeHeadSegment()->x(); 
+        int seg_y = getSnakeHeadSegment()->y() + (aSegmentIndex * CELL_SIZE); 
+    
+        aSegmentOut.setPosition(seg_x, seg_y); 
         
     }
-
 }
 
 void Snake::update()
@@ -84,41 +92,55 @@ void Snake::update()
             mSegments[i]->setDirection(mSegments[i-1]->direction());  
         }
     }
-    
+
+    // set the head segment
+    mHead = mSegments[0]; 
     
 }
 
 bool Snake::detectCollisions()
 {
-    // get the head of the snake
-    auto head = mSegments[0]; 
-    //printf("#############head_x: %4.3f, head_y: %4.3f################\n", head->x(), head->y()); 
-
     // check if head is outside of the grid 
-    if(head->x() < MIN_X || head->x() >= MAX_X || head->y() < MIN_Y || head->y() >= MAX_Y)
+    if(collidedWithBorder())
     {
         return true; 
     }
 
+    if(collidedWithSelf())
+    {
+        return true; 
+    }
+
+    // if it makes it here, there have been no collisions
+    return false; 
+}
+
+bool Snake::collidedWithBorder()
+{
+    if(mHead->x() < MIN_X || mHead->x() >= MAX_X || mHead->y() < MIN_Y || mHead->y() >= MAX_Y)
+    {
+        return true; 
+    }
+}
+
+bool Snake::collidedWithSelf()
+{
     // check if the head collides with any of its body segments 
     for(int i = 1; i < mSegments.size(); i++)
     {
         auto seg = mSegments[i]; 
 
-        if(head->x() == seg->x() && head->y() == seg->y())
+        if(mHead->x() == seg->x() && mHead->y() == seg->y())
         {
             return true; 
         }
     }
 
-    return false; 
 }
 
 bool Snake::ateAnApple()
 {
-    auto head = mSegments[0]; 
-
-    if(head->x() == Apple::get()->x() && head->y() == Apple::get()->y())
+    if(mHead->x() == Apple::get()->x() && mHead->y() == Apple::get()->y())
     {
         return true; 
     }
@@ -180,7 +202,7 @@ void Snake::reset()
     }
 
     // re-init the starting size of the snake
-    mNumSegments = 3;
+    mInitialSnakeLength = 3;
     mSegments.clear(); 
     
     // re-init the snake 
