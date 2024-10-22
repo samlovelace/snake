@@ -149,39 +149,51 @@ bool Snake::ateAnApple()
 
 void Snake::grow()
 { 
-    auto tail = mSegments[mSegments.size()-1];  
-
-    Segment* seg = new Segment(CELL_SIZE, CELL_SIZE); 
+    // get the current tail segment
+    Segment* tail = getSnakeTailSegment();  
     
+    // determine the new position of the tail segment
+    std::pair<int,int> newTailPosition = determineNewTailPosition(tail); 
+
+    // create new segment object
+    Segment* seg = new Segment(CELL_SIZE, CELL_SIZE); 
+
+    // set the position and color of the segment 
+    seg->setPosition(newTailPosition.first, newTailPosition.second);
+    seg->setColor(sf::Color::Green); 
+
+    // push new tail segment to end of segments vector 
+    mSegments.push_back(seg);
+
+}
+
+std::pair<int,int> Snake::determineNewTailPosition(Segment* aTailSegment)
+{
     int seg_x, seg_y; 
 
-    switch (tail->direction())
+    switch (aTailSegment->direction())
     {
     case Segment::DIRECTION::UP:
-        seg_x = tail->x();
-        seg_y = tail->y() - CELL_SIZE;
+        seg_x = aTailSegment->x();
+        seg_y = aTailSegment->y() - CELL_SIZE;
         break;
     case Segment::DIRECTION::DOWN: 
-        seg_x = tail->x();
-        seg_y = tail->y() + CELL_SIZE;
+        seg_x = aTailSegment->x();
+        seg_y = aTailSegment->y() + CELL_SIZE;
         break;
     case Segment::DIRECTION::LEFT: 
-        seg_x = tail->x() + CELL_SIZE;
-        seg_y = tail->y();
+        seg_x = aTailSegment->x() + CELL_SIZE;
+        seg_y = aTailSegment->y();
         break;
     case Segment::DIRECTION::RIGHT: 
-        seg_x = tail->x() - CELL_SIZE;
-        seg_y = tail->y();
+        seg_x = aTailSegment->x() - CELL_SIZE;
+        seg_y = aTailSegment->y();
         break;
     default:
         break;
     }
 
-
-    seg->setPosition(seg_x, seg_y);
-    seg->setColor(sf::Color::Green); 
-
-    mSegments.push_back(seg);
+    return std::pair<int, int>(seg_x, seg_y); 
 
 }
 

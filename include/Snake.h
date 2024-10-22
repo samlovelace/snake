@@ -25,6 +25,7 @@ public:
     // *********** GETTERS/SETTERS **************** // 
     std::vector<Segment*> getSegments(){return mSegments;}
     Segment* getSnakeHeadSegment() {return mSegments[0];}
+    Segment* getSnakeTailSegment() {return mSegments[mSegments.size() - 1];}
     void setDirection(Segment::DIRECTION aDir) {mSegments[0]->setDirection(aDir);}
 
 private: 
@@ -38,6 +39,8 @@ private:
     bool collidedWithBorder(); 
 
     bool collidedWithSelf(); 
+
+    std::pair<int, int> determineNewTailPosition(Segment* aTailSegment); 
 
     std::vector<Segment*> mSegments; 
     int mInitialSnakeLength;
