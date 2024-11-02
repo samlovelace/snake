@@ -9,12 +9,17 @@ class Snake
 
 public:
 
+    /**
+     * @brief accessor for the snake instance
+     * @return a pointer to the snake instance 
+     */
     static Snake* get()
     {
         static Snake* snake = new Snake();
         return snake; 
     }
 
+    // *********** Primary Functions *************** //
     void init(int x, int y); 
     void update(); 
     bool detectCollisions(); 
@@ -32,21 +37,18 @@ private:
     Snake();
     ~Snake();
 
+    // ****************** Helper Functions ***********// 
     void initializeSnakeSegments(); 
-
     void setSegmentStartingPosition(int aSegmentIndex, Segment& aSegment); 
-
     bool collidedWithBorder(); 
-
     bool collidedWithSelf(); 
-
     std::pair<int, int> determineNewTailPosition(Segment* aTailSegment); 
 
+    // ***************** Member Variables **************// 
     std::vector<Segment*> mSegments; 
     int mInitialSnakeLength;
     std::pair<float, float> mSnakeHeadStartingPosition; 
     sf::Color mColor;
-
     Segment* mHead; 
 };
 #endif // SNAKE_H
