@@ -10,15 +10,15 @@ int main()
     // the window where the game is played
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Snake"); 
 
-    // get the snake singleton
+    // get the snake and apple singletons
     Snake* snake = Snake::get(); 
+    Apple* apple = Apple::get(); 
 
-    // initialize snake at random point on board
-    snake->init(GRID_X, GRID_Y); 
+    // initialize snake and apple at random spots 
+    snake->init(); 
+    apple->init(); 
 
-    // get the Apple singleton
-    Apple::get()->init(); 
-
+    // he who controls the snake
     AI* ai = new AI(); 
 
     // render the snake while the window is open
@@ -66,13 +66,14 @@ int main()
         if(snake->detectCollisions())
         { 
             snake->reset(); 
+            apple->reset(); 
         } 
 
         // if the snake ate an apple, increase snake size and re-init the apple
         if(snake->ateAnApple())
         { 
             snake->grow(); 
-            Apple::get()->reset(); 
+            apple->spawn(); 
         }
 
         // clear the graphics buffer
@@ -80,8 +81,8 @@ int main()
 
         // render the border grid
         utils::renderGrid(window); 
-        utils::renderScore(window, Apple::get()->score(), 450, 30, 8); 
-        utils::renderScore(window, Apple::get()->topScore(), 600, 30, 8); 
+        utils::renderScore(window, apple->score(), 450, 30, 8); 
+        utils::renderScore(window, apple->topScore(), 600, 30, 8); 
 
         // draw each segment of the snake  
         for(auto seg : snake->getSegments())
@@ -90,13 +91,13 @@ int main()
         }
 
         // draw the apple 
-        window.draw(Apple::get()->getDrawable()); 
+        window.draw(apple->getDrawable()); 
 
         // actually display what was drawn
         window.display(); 
 
         // delay to make the game playable 
-        sf::sleep(sf::milliseconds(25)); 
+        sf::sleep(sf::milliseconds(1)); 
     }
 
 

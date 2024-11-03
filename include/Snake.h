@@ -20,7 +20,7 @@ public:
     }
 
     // *********** Primary Functions *************** //
-    void init(int x, int y); 
+    void init(); 
     void update(); 
     bool detectCollisions(); 
     void reset();  
