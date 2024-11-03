@@ -73,7 +73,7 @@ int main()
         if(snake->ateAnApple())
         { 
             snake->grow(); 
-            apple->spawn(); 
+            apple->respawn(); 
         }
 
         // clear the graphics buffer
