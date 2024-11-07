@@ -2,7 +2,7 @@
 #include "Apple.h"
 #include "utilities.h"
 
-Apple::Apple(/* args */) : Entity(CELL_SIZE-1, CELL_SIZE-1), mScore(0), mTopScore(0)
+Apple::Apple() : Entity(CELL_SIZE-1, CELL_SIZE-1), mScore(0), mTopScore(0)
 {
 }
 
@@ -22,8 +22,6 @@ void Apple::init()
         this->setPosition(GRID_X + (CELL_SIZE*appleLoc.first), GRID_Y + (CELL_SIZE*appleLoc.second)); 
 
     } while (generatedOnSnake());
-    
-    
 
 }
 
@@ -36,11 +34,21 @@ bool Apple::generatedOnSnake()
             return true; 
         }
     }
-    return false; 
 
-}
+    return false; 
+} 
 
 void Apple::reset()
+{
+    if(mScore >= mTopScore)
+    {
+        mTopScore = mScore; 
+    }
+
+    mScore = 0; 
+}
+
+void Apple::respawn()
 {
     // called when snake eats an apple so increment the score and re-init the apple
     mScore++;

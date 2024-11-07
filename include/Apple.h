@@ -16,8 +16,8 @@ public:
 
     void init();
     void reset(); 
+    void respawn(); 
     bool generatedOnSnake(); 
-
 
     // ************* Getters/Setters *********** // 
     int score() {return mScore; }

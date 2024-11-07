@@ -111,10 +111,7 @@ namespace utils
             renderGlyphDigit(window, digit, x + i * digitSpacing, y, blockSize);
         }
     }
-
-
-
-
+    
 } // namespace utils
 
 #endif // UTILS_H

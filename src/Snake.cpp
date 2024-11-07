@@ -12,7 +12,7 @@ Snake::~Snake()
     // do nothing 
 }
 
-void Snake::init(const int x, const int y)
+void Snake::init()
 { 
     // generate the random starting position (x,y) of the snake's head
     mSnakeHeadStartingPosition = utils::generateRandomPair(); 
@@ -121,12 +121,14 @@ bool Snake::collidedWithBorder()
     {
         return true; 
     }
+
+    return false; 
 }
 
 bool Snake::collidedWithSelf()
 {
     // check if the head collides with any of its body segments 
-    for(int i = 1; i < mSegments.size(); i++)
+    for(long unsigned int i = 1; i < mSegments.size(); i++)
     {
         auto seg = mSegments[i]; 
 
@@ -135,6 +137,8 @@ bool Snake::collidedWithSelf()
             return true; 
         }
     }
+
+    return false; 
 
 }
 
@@ -204,19 +208,11 @@ void Snake::reset()
     {
         delete seg; 
     }
-    
-    Apple* apple = Apple::get(); 
-
-    if(apple->score() >= apple->topScore())
-    {
-        apple->setTopScore(apple->score()); 
-        apple->resetScore(); 
-    }
 
     // re-init the starting size of the snake
     mInitialSnakeLength = 3;
     mSegments.clear(); 
     
     // re-init the snake 
-    init(GRID_X, GRID_Y); 
+    init(); 
 }
