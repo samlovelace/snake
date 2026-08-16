@@ -2,8 +2,10 @@
 #include "constants.h"
 #include "Snake.h" 
 #include "Apple.h"
-#include "AI.h"
 #include "utilities.h"
+
+#include "Agent.h"
+#include "AI.h"
 
 int main()
 {
@@ -19,7 +21,7 @@ int main()
     apple->init(); 
 
     // he who controls the snake
-    AI* ai = new AI(); 
+    Agent* agent = new AI(); 
 
     // render the snake while the window is open
     while(window.isOpen())
@@ -40,16 +42,16 @@ int main()
                switch (event.key.code)
                {
                 case sf::Keyboard::Up:
-                    snake->setDirection(Segment::DIRECTION::UP); 
+                    snake->setDirection(DIRECTION::UP); 
                     break;
                 case sf::Keyboard::Down:
-                    snake->setDirection(Segment::DIRECTION::DOWN); 
+                    snake->setDirection(DIRECTION::DOWN); 
                     break; 
                 case sf::Keyboard::Left: 
-                    snake->setDirection(Segment::DIRECTION::LEFT); 
+                    snake->setDirection(DIRECTION::LEFT); 
                     break; 
                 case sf::Keyboard::Right: 
-                    snake->setDirection(Segment::DIRECTION::RIGHT); 
+                    snake->setDirection(DIRECTION::RIGHT); 
                     break;
                 default:
                     break;
@@ -57,10 +59,8 @@ int main()
             }
         } 
 
-        ai->move();
-
-        // update the snakes position based on current direction 
-        snake->update(); 
+        DIRECTION next = agent->move(snake->getX(), snake->getY(), snake->getDirection());
+        snake->update(next); 
 
         // if collision occurs, reset the snake 
         if(snake->detectCollisions())
@@ -97,7 +97,7 @@ int main()
         window.display(); 
 
         // delay to make the game playable 
-        sf::sleep(sf::milliseconds(1)); 
+        sf::sleep(sf::milliseconds(25)); 
     }
 
 

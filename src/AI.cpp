@@ -12,7 +12,34 @@ AI::~AI()
 {
 }
 
-int AI::state(AI::TRY tryDir)
+DIRECTION AI::move(int x, int y, DIRECTION dir)
+{
+    // for current position of snake, try each possible direction to move
+    int try_f = tryDir(x, y, dir, AI::TRY::FORWARD); 
+    int try_l = tryDir(x, y, dir, AI::TRY::LEFT); 
+    int try_r = tryDir(x, y, dir, AI::TRY::RIGHT); 
+
+    DIRECTION newDir = dir;
+
+    // based on the scores from above, if try_f is the largest value, 
+    // no need to change the direction of the snake
+    if(try_f >= try_l && try_f >= try_r)
+    {
+        // no change in direction
+    }
+    else if (try_l > try_r)
+    {
+        newDir = turnSnakeLeft(dir);  
+    }
+    else
+    {
+        newDir = turnSnakeRight(dir);  
+    }
+
+    return newDir;
+}
+
+int AI::tryDir(int x, int y, DIRECTION dir, AI::TRY tryDir)
 {
     int reward = 0; 
     Snake* snake = Snake::get(); 
@@ -23,7 +50,7 @@ int AI::state(AI::TRY tryDir)
 
     switch (head->direction())
     {
-    case Segment::DIRECTION::UP:
+    case DIRECTION::UP:
         switch (tryDir)
         {
         case AI::TRY::FORWARD:
@@ -39,7 +66,7 @@ int AI::state(AI::TRY tryDir)
             break;
         }
         break;
-    case Segment::DIRECTION::DOWN: 
+    case DIRECTION::DOWN: 
         switch (tryDir)
         {
         case AI::TRY::FORWARD:
@@ -55,7 +82,7 @@ int AI::state(AI::TRY tryDir)
             break;
         }
         break;
-    case Segment::DIRECTION::LEFT:
+    case DIRECTION::LEFT:
         switch (tryDir)
         {
         case AI::TRY::FORWARD:
@@ -71,7 +98,7 @@ int AI::state(AI::TRY tryDir)
             break;
         }
         break;
-    case Segment::DIRECTION::RIGHT: 
+    case DIRECTION::RIGHT: 
         switch (tryDir)
         {
         case AI::TRY::FORWARD:
@@ -91,7 +118,6 @@ int AI::state(AI::TRY tryDir)
         break;
     }
 
-    
     // dont run into yourself dummy
     for(auto seg : snake->getSegments())
     {
@@ -130,92 +156,62 @@ int AI::state(AI::TRY tryDir)
 
     if(try_diff_x < diff_x)
     {
-        reward += 5; 
+        reward += 25; 
     }
     if(try_diff_y < diff_y)
     {
-        reward += 5; 
+        reward += 25; 
     }
 
     return reward; 
 }
 
-
-
-void AI::move()
+DIRECTION AI::turnSnakeLeft(DIRECTION currentDir)
 {
-    // for current position of snake, try each possible direction to move
-    int try_f = state(AI::TRY::FORWARD); 
-    int try_l = state(AI::TRY::LEFT); 
-    int try_r = state(AI::TRY::RIGHT); 
-
-
-    // based on the scores from above, if try_f is the largest value, 
-    // no need to change the direction of the snake
-    if(try_f >= try_l && try_f >= try_r)
-    {
-        // no change in direction
-    }
-    else if (try_l > try_r)
-    {
-        turnSnakeLeft();  
-    }
-    else
-    {
-        turnSnakeRight();  
-    }
-}
-
-void AI::turnSnakeLeft()
-{
-    // get the direction for the head of the snake
-    Snake* snake = Snake::get(); 
-
-    Segment::DIRECTION currentDir = snake->getSegments()[0]->direction(); 
+    DIRECTION newDir = currentDir;
 
     switch (currentDir)
     {
-    case Segment::DIRECTION::UP:
-        snake->setDirection(Segment::DIRECTION::LEFT);
+    case DIRECTION::UP:
+        newDir = DIRECTION::LEFT;
         break;
-    case Segment::DIRECTION::DOWN: 
-        snake->setDirection(Segment::DIRECTION::RIGHT); 
+    case DIRECTION::DOWN: 
+        newDir = DIRECTION::RIGHT;  
         break; 
-    case Segment::DIRECTION::LEFT:
-        snake->setDirection(Segment::DIRECTION::DOWN); 
+    case DIRECTION::LEFT:
+        newDir = DIRECTION::DOWN; 
         break; 
-    case Segment::DIRECTION::RIGHT:
-        snake->setDirection(Segment::DIRECTION::UP); 
+    case DIRECTION::RIGHT:
+        newDir = DIRECTION::UP; 
         break; 
     default:
         break;
     }
+    
+    return newDir;
 }
 
-
-void AI::turnSnakeRight()
+DIRECTION AI::turnSnakeRight(DIRECTION currentDir)
 {
-    // get the direction for the head of the snake
-    Snake* snake = Snake::get(); 
-
-    Segment::DIRECTION currentDir = snake->getSegments()[0]->direction(); 
+    DIRECTION newDir = currentDir;
 
     switch (currentDir)
     {
-    case Segment::DIRECTION::UP:
-        snake->setDirection(Segment::DIRECTION::RIGHT);
+    case DIRECTION::UP:
+        newDir = DIRECTION::RIGHT;
         break;
-    case Segment::DIRECTION::DOWN: 
-        snake->setDirection(Segment::DIRECTION::LEFT); 
+    case DIRECTION::DOWN: 
+        newDir = DIRECTION::LEFT;  
         break; 
-    case Segment::DIRECTION::LEFT:
-        snake->setDirection(Segment::DIRECTION::UP); 
+    case DIRECTION::LEFT:
+        newDir = DIRECTION::UP; 
         break; 
-    case Segment::DIRECTION::RIGHT:
-        snake->setDirection(Segment::DIRECTION::DOWN); 
+    case DIRECTION::RIGHT:
+        newDir = DIRECTION::DOWN; 
         break; 
     default:
         break;
     }
-
+    
+    return newDir;
 }

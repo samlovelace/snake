@@ -1,11 +1,17 @@
 #ifndef AI_H
 #define AI_H
 
-class AI
+#include "Agent.h"
+
+class AI : public Agent
 {
 public:
-    AI(/* args */);
+    AI();
     ~AI();
+
+    DIRECTION move(int x, int y, DIRECTION dir) override;
+
+protected:
 
     /** 
      * TRY - enum for each direction for the AI to "try"
@@ -20,23 +26,23 @@ public:
     /** 
      * @brief move() determines the next direction of the snake
      */
-    void move(); 
+    DIRECTION move(); 
 
     /** 
-     * @brief state() determines the reward for each direction the snake could move 
+     * @brief try() determines the reward for each direction the snake could move 
      *        based on its current position 
      */
-    int state(TRY tryDir); 
+    int tryDir(int x, int y, DIRECTION dir, AI::TRY tryDir); 
 
     /** 
      * @brief turnSnakeLeft() turns the snake to the left based on its current direction
      */
-    void turnSnakeLeft(); 
+    DIRECTION turnSnakeLeft(DIRECTION currentDir); 
 
     /** 
      * @brief turnSnakeRight() turns the snake to the right based on its current direction
      */
-    void turnSnakeRight(); 
+    DIRECTION turnSnakeRight(DIRECTION currentDir); 
 
 private:
     /* data */

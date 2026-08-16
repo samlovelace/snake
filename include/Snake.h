@@ -2,6 +2,7 @@
 #define SNAKE_H
 
 #include <vector>
+#include "Types.hpp"
 #include "Segment.h"
 
 class Snake
@@ -21,17 +22,21 @@ public:
 
     // *********** Primary Functions *************** //
     void init(); 
-    void update(); 
+    void update(DIRECTION aDir); 
     bool detectCollisions(); 
     void reset();  
     bool ateAnApple(); 
     void grow(); 
 
-    // *********** GETTERS/SETTERS **************** // 
+    // *********** GETTERS/SETTERS **************** //
+    int getX() {return mHead->x(); }
+    int getY() {return mHead->y(); }
+    DIRECTION getDirection() {return mHead->direction(); }
+    
     std::vector<Segment*> getSegments(){return mSegments;}
     Segment* getSnakeHeadSegment() {return mSegments[0];}
     Segment* getSnakeTailSegment() {return mSegments[mSegments.size() - 1];}
-    void setDirection(Segment::DIRECTION aDir) {mSegments[0]->setDirection(aDir);}
+    void setDirection(DIRECTION aDir) {mSegments[0]->setDirection(aDir);}
 
 private: 
     Snake();

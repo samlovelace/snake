@@ -2,6 +2,7 @@
 #define SEGMENT_H
 
 #include "Entity.h"
+#include "Types.hpp"
 
 class Segment : public Entity
 {
@@ -9,18 +10,8 @@ public:
     Segment(int width, int height);
     ~Segment();
 
-    enum class DIRECTION
-    {
-        UP,
-        DOWN,
-        LEFT, 
-        RIGHT
-    };
-
-    //******* Getters/Setters **********// 
     DIRECTION direction() {return mDirection; }
-    void setDirection(Segment::DIRECTION aDirection){mDirection = aDirection;}
-
+    void setDirection(DIRECTION aDirection){mDirection = aDirection;}
 
 private: 
     DIRECTION mDirection; 

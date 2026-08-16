@@ -19,22 +19,14 @@ void Snake::init()
 
     for(int segmentIndex = 0; segmentIndex < mInitialSnakeLength; segmentIndex++)
     {
-        // create new segment object 
         Segment* seg = new Segment(CELL_SIZE, CELL_SIZE); 
-
-        // set the color segment
         seg->setColor(mColor); 
-
-        // starting direction is always up
-        seg->setDirection(Segment::DIRECTION::UP); 
-
-        // set the starting position of the initial snake segments
+        seg->setDirection(DIRECTION::UP); 
         setSegmentStartingPosition(segmentIndex, *seg); 
         
         mSegments.push_back(seg);   
     }
 
-    // set the head segment 
     mHead = mSegments[0]; 
 
 }
@@ -54,12 +46,14 @@ void Snake::setSegmentStartingPosition(int aSegmentIndex, Segment& aSegmentOut)
         int seg_y = getSnakeHeadSegment()->y() + (aSegmentIndex * CELL_SIZE); 
     
         aSegmentOut.setPosition(seg_x, seg_y); 
-        
     }
 }
 
-void Snake::update()
+void Snake::update(DIRECTION aDir)
 {
+    // update direction of the snake head segment
+    setDirection(aDir);
+
     for(int i = mSegments.size()-1; i >=0; i--)
     {     
         // move the head by a cell size, then move body segments into the parent
@@ -70,16 +64,16 @@ void Snake::update()
 
             switch (seg->direction())
             {
-            case Segment::DIRECTION::UP:
+            case DIRECTION::UP:
                 seg->setPosition(seg->x(), seg->y() - CELL_SIZE); 
                 break;
-            case Segment::DIRECTION::DOWN: 
+            case DIRECTION::DOWN: 
                 seg->setPosition(seg->x(), seg->y() + CELL_SIZE);
                 break; 
-            case Segment::DIRECTION::LEFT: 
+            case DIRECTION::LEFT: 
                 seg->setPosition(seg->x() - CELL_SIZE, seg->y()); 
                 break; 
-            case Segment::DIRECTION::RIGHT: 
+            case DIRECTION::RIGHT: 
                 seg->setPosition(seg->x() + CELL_SIZE, seg->y());
                 break; 
             default:
@@ -173,23 +167,24 @@ void Snake::grow()
 
 std::pair<int,int> Snake::determineNewTailPosition(Segment* aTailSegment)
 {
-    int seg_x, seg_y; 
+    int seg_x = aTailSegment->x(); 
+    int seg_y = aTailSegment->y(); 
 
     switch (aTailSegment->direction())
     {
-    case Segment::DIRECTION::UP:
+    case DIRECTION::UP:
         seg_x = aTailSegment->x();
         seg_y = aTailSegment->y() - CELL_SIZE;
         break;
-    case Segment::DIRECTION::DOWN: 
+    case DIRECTION::DOWN: 
         seg_x = aTailSegment->x();
         seg_y = aTailSegment->y() + CELL_SIZE;
         break;
-    case Segment::DIRECTION::LEFT: 
+    case DIRECTION::LEFT: 
         seg_x = aTailSegment->x() + CELL_SIZE;
         seg_y = aTailSegment->y();
         break;
-    case Segment::DIRECTION::RIGHT: 
+    case DIRECTION::RIGHT: 
         seg_x = aTailSegment->x() - CELL_SIZE;
         seg_y = aTailSegment->y();
         break;
