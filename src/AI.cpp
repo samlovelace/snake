@@ -1,7 +1,5 @@
 #include "AI.h"
-#include "Snake.h"
 #include "utilities.h"
-#include "Apple.h"
 
 
 AI::AI(/* args */)
@@ -12,14 +10,14 @@ AI::~AI()
 {
 }
 
-DIRECTION AI::move(int x, int y, DIRECTION dir)
+DIRECTION AI::move(const Observation& observation)
 {
     // for current position of snake, try each possible direction to move
-    int try_f = tryDir(x, y, dir, AI::TRY::FORWARD); 
-    int try_l = tryDir(x, y, dir, AI::TRY::LEFT); 
-    int try_r = tryDir(x, y, dir, AI::TRY::RIGHT); 
+    int try_f = tryDir(observation, AI::TRY::FORWARD);
+    int try_l = tryDir(observation, AI::TRY::LEFT);
+    int try_r = tryDir(observation, AI::TRY::RIGHT);
 
-    DIRECTION newDir = dir;
+    DIRECTION newDir = observation.direction;
 
     // based on the scores from above, if try_f is the largest value, 
     // no need to change the direction of the snake
@@ -29,26 +27,23 @@ DIRECTION AI::move(int x, int y, DIRECTION dir)
     }
     else if (try_l > try_r)
     {
-        newDir = turnSnakeLeft(dir);  
+        newDir = turnSnakeLeft(observation.direction);
     }
     else
     {
-        newDir = turnSnakeRight(dir);  
+        newDir = turnSnakeRight(observation.direction);
     }
 
     return newDir;
 }
 
-int AI::tryDir(int x, int y, DIRECTION dir, AI::TRY tryDir)
+int AI::tryDir(const Observation& observation, AI::TRY tryDir)
 {
-    int reward = 0; 
-    Snake* snake = Snake::get(); 
-    Segment* head = snake->getSegments()[0]; 
+    int reward = 0;
+    int try_x = observation.head.x;
+    int try_y = observation.head.y;
 
-    int try_x = head->x(); 
-    int try_y = head->y();  
-
-    switch (head->direction())
+    switch (observation.direction)
     {
     case DIRECTION::UP:
         switch (tryDir)
@@ -119,11 +114,11 @@ int AI::tryDir(int x, int y, DIRECTION dir, AI::TRY tryDir)
     }
 
     // dont run into yourself dummy
-    for(auto seg : snake->getSegments())
+    for(const auto& seg : observation.segments)
     {
-        if(try_x == seg->x() && try_y == seg->y())
+        if(try_x == seg.x && try_y == seg.y)
         {
-            reward += -100; 
+            reward += -100;
         }
     }
 
@@ -139,18 +134,18 @@ int AI::tryDir(int x, int y, DIRECTION dir, AI::TRY tryDir)
         reward += -100; 
     }
 
-    int apple_x = Apple::get()->x(); 
-    int apple_y = Apple::get()->y(); 
+    int apple_x = observation.apple.x;
+    int apple_y = observation.apple.y;
 
     // eat the apple..... or die!
     if(try_x == apple_x && try_y == apple_y)
     {
-        reward += 100; 
+        reward += 100;
     }
 
     // get closer to the apple, so you can eat it
-    int diff_x = abs(head->x() - apple_x); 
-    int diff_y = abs(head->y() - apple_y); 
+    int diff_x = abs(observation.head.x - apple_x);
+    int diff_y = abs(observation.head.y - apple_y);
     int try_diff_x = abs(try_x - apple_x); 
     int try_diff_y = abs(try_y - apple_y); 
 

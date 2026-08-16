@@ -9,7 +9,7 @@ public:
     AI();
     ~AI();
 
-    DIRECTION move(int x, int y, DIRECTION dir) override;
+    DIRECTION move(const Observation& observation) override;
 
 protected:
 
@@ -32,7 +32,7 @@ protected:
      * @brief try() determines the reward for each direction the snake could move 
      *        based on its current position 
      */
-    int tryDir(int x, int y, DIRECTION dir, AI::TRY tryDir); 
+    int tryDir(const Observation& observation, AI::TRY tryDir);
 
     /** 
      * @brief turnSnakeLeft() turns the snake to the left based on its current direction

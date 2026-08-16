@@ -6,6 +6,7 @@
 
 #include "Agent.h"
 #include "AI.h"
+#include "Scene.h"
 
 int main()
 {
@@ -21,7 +22,10 @@ int main()
     apple->init(); 
 
     // he who controls the snake
-    Agent* agent = new AI(); 
+    Agent* agent = new AI();
+
+    // bridges the Snake/Apple singletons into an Observation for the agent
+    Scene scene;
 
     // render the snake while the window is open
     while(window.isOpen())
@@ -59,7 +63,7 @@ int main()
             }
         } 
 
-        DIRECTION next = agent->move(snake->getX(), snake->getY(), snake->getDirection());
+        DIRECTION next = agent->move(scene.getObservation());
         snake->update(next); 
 
         // if collision occurs, reset the snake 

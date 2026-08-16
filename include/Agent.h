@@ -1,13 +1,13 @@
 #ifndef AGENT_H
 #define AGENT_H
  
-#include "Types.hpp"
- 
-class Agent 
-{ 
+#include "Observation.h"
+
+class Agent
+{
 public:
-    virtual ~Agent() = default; 
-    virtual DIRECTION move(int x, int y, DIRECTION dir) = 0;
+    virtual ~Agent() = default;
+    virtual DIRECTION move(const Observation& observation) = 0;
 
 private:
    

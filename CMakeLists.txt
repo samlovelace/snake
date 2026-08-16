@@ -9,6 +9,7 @@ set(SNAKE_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/src/Apple.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/main.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/AI.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/Scene.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SNAKE_SOURCES})
