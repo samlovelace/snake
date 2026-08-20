@@ -1,3 +1,6 @@
+
+#include <iostream>
+
 #include "SFML/Graphics.hpp"
 #include "constants.h"
 #include "Snake.h" 
@@ -6,10 +9,29 @@
 
 #include "Agent.h"
 #include "AI.h"
+#include "TrainingAgent.h"
 #include "Scene.h"
 
-int main()
+int main(int argc, char* argv[])
 {
+    // he who controls the snake
+    Agent* agent = nullptr;
+
+    if(argc > 1)
+    {
+        std::string config = argv[1]; 
+        if(config == "--train")
+        {
+            std::cout << "Using training agent" << std::endl;
+            agent = new TrainingAgent(); 
+        }
+        else if(config == "--ai")
+        {
+            std::cout << "Using AI agent" << std::endl;
+            agent = new AI(); 
+        }
+    }
+
     // the window where the game is played
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Snake"); 
 
@@ -20,9 +42,6 @@ int main()
     // initialize snake and apple at random spots 
     snake->init(); 
     apple->init(); 
-
-    // he who controls the snake
-    Agent* agent = new AI();
 
     // bridges the Snake/Apple singletons into an Observation for the agent
     Scene scene;
@@ -101,7 +120,7 @@ int main()
         window.display(); 
 
         // delay to make the game playable 
-        sf::sleep(sf::milliseconds(25)); 
+        sf::sleep(sf::milliseconds(75)); 
     }
 
 
