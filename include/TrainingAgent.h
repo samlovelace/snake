@@ -12,6 +12,7 @@ public:
     ~TrainingAgent() override;
 
     DIRECTION move(const Observation& observation) override;
+    void reward(const Reward& reward) override; 
 
 private:
     zmq::context_t mContext; 

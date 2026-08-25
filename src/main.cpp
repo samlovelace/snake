@@ -85,19 +85,28 @@ int main(int argc, char* argv[])
         DIRECTION next = agent->move(scene.getObservation());
         snake->update(next); 
 
+        Reward reward; 
+        reward.reward = 0; 
+        reward.done = false; 
+
         // if collision occurs, reset the snake 
         if(snake->detectCollisions())
         { 
+            reward.done = true; 
             snake->reset(); 
             apple->reset(); 
         } 
 
         // if the snake ate an apple, increase snake size and re-init the apple
         if(snake->ateAnApple())
-        { 
+        {
+            reward.reward += 10;  
             snake->grow(); 
             apple->respawn(); 
         }
+
+        reward.state = scene.getObservation(); 
+        agent->reward(reward); 
 
         // clear the graphics buffer
         window.clear(); 
@@ -120,7 +129,7 @@ int main(int argc, char* argv[])
         window.display(); 
 
         // delay to make the game playable 
-        sf::sleep(sf::milliseconds(75)); 
+        sf::sleep(sf::milliseconds(10)); 
     }
 
 

@@ -36,4 +36,21 @@ struct Observation
     }
 };
 
+struct Reward
+{
+    float reward;
+    Observation state; 
+    bool done;
+
+    nlohmann::json toJson() const 
+    {
+        nlohmann::json json; 
+        json["reward"] = reward; 
+        json["state"] = state.toJson(); 
+        json["done"] = done; 
+
+        return json; 
+    }
+};
+
 #endif // OBSERVATION_H

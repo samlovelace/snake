@@ -10,6 +10,7 @@ public:
     ~AI();
 
     DIRECTION move(const Observation& observation) override;
+    void reward(const Reward& reward) override; 
 
 protected:
 

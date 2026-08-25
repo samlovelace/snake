@@ -40,6 +40,8 @@ bool Apple::generatedOnSnake()
 
 void Apple::reset()
 {
+    respawn(); // respawn first so we can clear the score 
+
     if(mScore >= mTopScore)
     {
         mTopScore = mScore; 

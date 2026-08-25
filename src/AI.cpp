@@ -161,6 +161,11 @@ int AI::tryDir(const Observation& observation, AI::TRY tryDir)
     return reward; 
 }
 
+void AI::reward(const Reward& reward)
+{
+    
+}
+
 DIRECTION AI::turnSnakeLeft(DIRECTION currentDir)
 {
     DIRECTION newDir = currentDir;

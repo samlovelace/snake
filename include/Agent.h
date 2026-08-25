@@ -8,6 +8,7 @@ class Agent
 public:
     virtual ~Agent() = default;
     virtual DIRECTION move(const Observation& observation) = 0;
+    virtual void reward(const Reward& reward) = 0; 
 
 private:
    

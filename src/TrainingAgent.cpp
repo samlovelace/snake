@@ -37,3 +37,18 @@ DIRECTION TrainingAgent::move(const Observation& observation)
 
     return static_cast<DIRECTION>(directionInt);
 }
+
+void TrainingAgent::reward(const Reward& reward) 
+{
+    nlohmann::json jsonReward = reward.toJson(); 
+    std::string serializedReward = jsonReward.dump(); 
+
+    zmq::message_t rewardReq(serializedReward.size()); 
+    memcpy(rewardReq.data(), serializedReward.c_str(), serializedReward.size()); 
+    mSocket.send(rewardReq, zmq::send_flags::none); 
+
+    // Receive the response from the Python process notifying receipt
+    zmq::message_t reply;
+    mSocket.recv(reply, zmq::recv_flags::none);
+    std::string response(static_cast<char*>(reply.data()), reply.size());
+}
