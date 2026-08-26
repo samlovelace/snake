@@ -2,6 +2,7 @@
 #define OBSERVATION_H
 
 #include <vector>
+#include <array>
 
 #include <nlohmann/json.hpp>
 
@@ -33,6 +34,24 @@ struct Observation
         json["apple"] = {{"x", apple.x}, {"y", apple.y}};
 
         return json; 
+    }
+};
+
+struct State 
+{
+    std::array<int, 4> direction; 
+    std::array<int, 4> foodDir; 
+    std::array<int, 3> danger; 
+    float distance; 
+
+    nlohmann::json toJson() const 
+    {
+        nlohmann::json json;
+        json["direction"] = direction;
+        json["foodDir"] = foodDir;
+        json["danger"] = danger;
+        json["distance"] = distance; 
+        return json;
     }
 };
 

@@ -82,7 +82,8 @@ int main(int argc, char* argv[])
             }
         } 
 
-        DIRECTION next = agent->move(scene.getObservation());
+        Observation prev = scene.getObservation(); 
+        DIRECTION next = agent->move(prev);
         snake->update(next); 
 
         Reward reward; 
@@ -92,7 +93,7 @@ int main(int argc, char* argv[])
         // if collision occurs, reset the snake 
         if(snake->detectCollisions())
         { 
-            reward.done = true; 
+            reward.done = true;
             snake->reset(); 
             apple->reset(); 
         } 
@@ -105,7 +106,10 @@ int main(int argc, char* argv[])
             apple->respawn(); 
         }
 
-        reward.state = scene.getObservation(); 
+        Observation current = scene.getObservation(); 
+        reward.state = current; 
+        
+        reward.reward += scene.updateReward(prev, current); 
         agent->reward(reward); 
 
         // clear the graphics buffer

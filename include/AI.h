@@ -12,8 +12,6 @@ public:
     DIRECTION move(const Observation& observation) override;
     void reward(const Reward& reward) override; 
 
-protected:
-
     /** 
      * TRY - enum for each direction for the AI to "try"
      */
@@ -35,15 +33,15 @@ protected:
      */
     int tryDir(const Observation& observation, AI::TRY tryDir);
 
-    /** 
+    /**
      * @brief turnSnakeLeft() turns the snake to the left based on its current direction
      */
-    DIRECTION turnSnakeLeft(DIRECTION currentDir); 
+    static DIRECTION turnSnakeLeft(DIRECTION currentDir);
 
-    /** 
+    /**
      * @brief turnSnakeRight() turns the snake to the right based on its current direction
      */
-    DIRECTION turnSnakeRight(DIRECTION currentDir); 
+    static DIRECTION turnSnakeRight(DIRECTION currentDir);
 
 private:
     /* data */

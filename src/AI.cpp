@@ -166,7 +166,7 @@ void AI::reward(const Reward& reward)
     
 }
 
-DIRECTION AI::turnSnakeLeft(DIRECTION currentDir)
+/*static*/ DIRECTION AI::turnSnakeLeft(DIRECTION currentDir)
 {
     DIRECTION newDir = currentDir;
 
@@ -191,7 +191,7 @@ DIRECTION AI::turnSnakeLeft(DIRECTION currentDir)
     return newDir;
 }
 
-DIRECTION AI::turnSnakeRight(DIRECTION currentDir)
+/*static*/ DIRECTION AI::turnSnakeRight(DIRECTION currentDir)
 {
     DIRECTION newDir = currentDir;
 

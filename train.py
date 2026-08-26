@@ -26,7 +26,7 @@ class QNetwork(nn.Module):
     
     
 # network setup 
-policy = QNetwork(obs_dim=5)
+policy = QNetwork(obs_dim=12)
 
 optimizer = torch.optim.Adam(
     policy.parameters(),
@@ -46,13 +46,14 @@ def select_action(state, policy_net, epsilon, n_actions=3):
 
 def parse_observation_tensor(json_str):
     data = json.loads(json_str)
-    obs = [
-        data["head"]["x"],
-        data["head"]["y"],
-        data["direction"],
-        data["apple"]["x"],
-        data["apple"]["y"],
-    ]
+
+    obs = (
+        data["danger"]
+        + data["direction"]
+        + data["foodDir"]
+        + [data["distance"]]
+    )
+
     return torch.tensor(obs, dtype=torch.float32)
 
 def train_step(state, action, reward, done, next_state, policy):
@@ -81,11 +82,11 @@ def loop():
         
         # receive observation from game 
         initial = socket.recv_string()
-        #print(f"Received reply: {initial}")
+        print(f"Received reply: {initial}")
         
         obs = parse_observation_tensor(initial)
         action = select_action(obs, policy, epsilon=0.1)
-        #print(f"Selected action:  {action}")
+        print(f"Selected action:  {action}")
         
         # send action to game 
         reply = {"direction": action}
@@ -93,7 +94,7 @@ def loop():
 
         # get reward
         reward = socket.recv_string()
-        #print(f"Received reply: {reward}")
+        print(f"Received reply: {reward}")
         reply = {"ack": 1}
         socket.send_string(json.dumps(reply))
 

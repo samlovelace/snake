@@ -21,3 +21,27 @@ Observation Scene::getObservation() const
 
     return obs;
 }
+
+float Scene::updateReward(const Observation& prev, const Observation& curr)
+{
+    float prevDx = prev.head.x - prev.apple.x; 
+    float prevDy = prev.head.y - prev.apple.y;
+    float prevDist = sqrt(prevDx*prevDx + prevDy*prevDy); 
+
+    float currDx = curr.head.x - curr.apple.x; 
+    float currDy = curr.head.y - curr.apple.y; 
+    float currDist = sqrt(currDx*currDx + currDy*currDy); 
+
+    float reward = 0; 
+    if(currDist < prevDist)
+    {
+        reward = 1; 
+    }
+    else if(prevDist < currDist)
+    {
+        reward = -1; 
+    }
+    return reward; 
+}
+
+
