@@ -10,6 +10,7 @@
 #include "Agent.h"
 #include "AI.h"
 #include "TrainingAgent.h"
+#include "DqnAgent.h"
 #include "Scene.h"
 
 int main(int argc, char* argv[])
@@ -28,7 +29,12 @@ int main(int argc, char* argv[])
         else if(config == "--ai")
         {
             std::cout << "Using AI agent" << std::endl;
-            agent = new AI(); 
+            agent = new AI();
+        }
+        else if(config == "--dqn")
+        {
+            std::cout << "Using DQN agent" << std::endl;
+            agent = new DqnAgent();
         }
     }
 
@@ -133,7 +139,7 @@ int main(int argc, char* argv[])
         window.display(); 
 
         // delay to make the game playable 
-        sf::sleep(sf::milliseconds(10)); 
+        sf::sleep(sf::milliseconds(1)); 
     }
 
 
